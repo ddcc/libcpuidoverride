@@ -4,7 +4,7 @@ A shim dynamic loader for overriding CPUID, using processor support for CPUID fa
 
 Writeup: https://www.dcddcc.com/blog/2019-05-01-processor-cpuid-faulting-and-dynamic-loader-interposing.html
 
-Supported CPUID features: `SSE`, `SSE2`, `SSE3`, `SSSE3`, `SSE41`, `SSE42`, `AVX`, `AVX2`, `AVX512`.
+Overridable CPUID features: [`SSE`](https://en.wikipedia.org/wiki/Streaming_SIMD_Extensions), [`SSE2`](https://en.wikipedia.org/wiki/SSE2), [`SSE3`](https://en.wikipedia.org/wiki/SSE3), [`SSSE3`](https://en.wikipedia.org/wiki/SSSE3), [`SSE41`](https://en.wikipedia.org/wiki/SSE4#SSE4.1), [`SSE42`](https://en.wikipedia.org/wiki/SSE4#SSE4.2), [`AVX`](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions), [`AVX2`](https://en.wikipedia.org/wiki/Advanced_Vector_Extensions#AVX2), [`AVX512`](https://en.wikipedia.org/wiki/AVX-512), [`HLE`](https://en.wikipedia.org/wiki/Transactional_Synchronization_Extensions#Hardware_Lock_Elision), [`RTM`](https://en.wikipedia.org/wiki/Transactional_Synchronization_Extensions#Restricted_Transactional_Memory).
 
 ## Usage
 
