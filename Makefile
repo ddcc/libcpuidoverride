@@ -1,4 +1,4 @@
-CFLAGS  += -g -O2 -fPIC -pie -Wall -fno-stack-protector -fvisibility=hidden
+CFLAGS  += -g -O2 -fPIC -pie -Wall -fno-stack-protector -fvisibility=hidden -fno-builtin
 LDFLAGS += -fPIC -pie -static -nostdlib -Wl,-z,relro -Wl,-z,initfirst -Wl,-e_start
 
 DEPS    = $(wildcard src/*.h)
