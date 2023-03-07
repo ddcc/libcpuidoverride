@@ -80,7 +80,7 @@ void elf_phdr_load(const Elf_Phdr *phdr, unsigned int num_phdr, int fd, unsigned
     for (unsigned int i = 0; i < num_phdr; ++i) {
         if (phdr[i].p_type == PT_LOAD) {
             /* Map in the page from the file */
-            void *addr = my_mmap((void *)(ALIGN(base + phdr[i].p_vaddr, page_sz)), phdr[i].p_filesz, elf_phdr_flags_prot(phdr[i].p_flags), MAP_FIXED_NOREPLACE | MAP_PRIVATE, fd, ALIGN(phdr[i].p_offset, page_sz));
+            void *addr = my_mmap((void *)(ALIGN(base + phdr[i].p_vaddr, page_sz)), phdr[i].p_vaddr - ALIGN(phdr[i].p_vaddr, page_sz) + phdr[i].p_filesz, elf_phdr_flags_prot(phdr[i].p_flags), MAP_FIXED_NOREPLACE | MAP_PRIVATE, fd, ALIGN(phdr[i].p_offset, page_sz));
             if (addr == MAP_FAILED) {
                 my_puts("Failed to map page from file!");
                 my_abort();
@@ -88,8 +88,8 @@ void elf_phdr_load(const Elf_Phdr *phdr, unsigned int num_phdr, int fd, unsigned
 
             /* Map in additional anonymous pages, if necessary */
             /* See load_elf_binary in linux/fs/binfmt_elf.c */
-            if (phdr[i].p_memsz > phdr[i].p_filesz) {
-                void *addr = my_mmap((void *)(ALIGN_UP(base + phdr[i].p_vaddr + phdr[i].p_filesz, page_sz)), phdr[i].p_memsz - phdr[i].p_filesz, elf_phdr_flags_prot(phdr[i].p_flags), MAP_FIXED_NOREPLACE | MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+            if (phdr[i].p_vaddr + phdr[i].p_memsz > ALIGN_UP(phdr[i].p_vaddr + phdr[i].p_filesz, page_sz)) {
+                void *addr = my_mmap((void *)(ALIGN_UP(base + phdr[i].p_vaddr + phdr[i].p_filesz, page_sz)), (phdr[i].p_vaddr + phdr[i].p_memsz) - ALIGN_UP(phdr[i].p_vaddr + phdr[i].p_filesz, page_sz), elf_phdr_flags_prot(phdr[i].p_flags), MAP_FIXED_NOREPLACE | MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
                 if (addr == MAP_FAILED) {
                     my_puts("Failed to map anonymous page!");
                     my_abort();
