@@ -86,6 +86,16 @@ void elf_phdr_load(const Elf_Phdr *phdr, unsigned int num_phdr, int fd, unsigned
                 my_abort();
             }
 
+            /* Zero the BSS portion within the last file-backed page */
+            /* See padzero() in linux/fs/binfmt_elf.c */
+            if (phdr[i].p_memsz > phdr[i].p_filesz) {
+                uintptr_t bss_start = base + phdr[i].p_vaddr + phdr[i].p_filesz;
+                uintptr_t bss_page_end = ALIGN_UP(bss_start, page_sz);
+                volatile uint8_t *p = (volatile uint8_t *)bss_start;
+                while ((uintptr_t)p < bss_page_end)
+                    *p++ = 0;
+            }
+
             /* Map in additional anonymous pages, if necessary */
             /* See load_elf_binary in linux/fs/binfmt_elf.c */
             if (phdr[i].p_vaddr + phdr[i].p_memsz > ALIGN_UP(phdr[i].p_vaddr + phdr[i].p_filesz, page_sz)) {
