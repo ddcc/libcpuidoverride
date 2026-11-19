@@ -22,6 +22,21 @@
 # endif /* GCC_VERSION < 8.1.0 */
 #endif /* __GNUC__ */
 
+/*  */
+#ifndef bit_AVX512PF
+#define bit_AVX512PF   (1 << 26)
+#endif
+#ifndef bit_AVX512ER
+#define bit_AVX512ER   (1 << 27)
+#endif
+#ifndef bit_AVX5124VNNIW
+#define bit_AVX5124VNNIW       (1 << 2)
+#endif
+#ifndef bit_AVX5124FMAPS
+#define bit_AVX5124FMAPS       (1 << 3)
+#endif
+
+
 /* Raw values of the CPUID instruction */
 #define CPUID_INSN0                                 0x0f
 #define CPUID_INSN1                                 0xa2
